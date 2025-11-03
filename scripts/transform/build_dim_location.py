@@ -16,14 +16,15 @@ def transform_dim_location(raw_data):
 
     dim_location = df[[
         'location_sk',
-        'address_id', 
+        'address_id',
         'line1',
         'line2',
         'city',
         'postal_code',
         'province_name',
         'province_code',
-        'country_code'
+        'country_code',
+        'created_at'
     ]]
 
     return dim_location
