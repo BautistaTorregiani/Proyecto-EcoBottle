@@ -72,13 +72,13 @@ Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
     source venv/bin/activate
     ```
 
-    3.  **Instalar dependencias:**
+3.  **Instalar dependencias:**
     El archivo `requirements.txt` contiene todas las librerías de Python necesarias.
     ```bash
     pip install -r requirements.txt
     ```
 
-    4. Ejecución del Proceso ETL
+4. **Ejecución del Proceso ETL:**
 
     El script `main.py` actúa como orquestador central y maneja todo el proceso ETL. Este script se encarga de ejecutar las transformaciones en el orden correct para asegurar la integridad.
 
