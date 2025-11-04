@@ -19,35 +19,35 @@ El modelo de datos se descompone 6 esquemas estrella, uno por cada proceso de ne
 
 ### 3.1. Fact_Order
 
-![Esquema de Ventas (Order)](assets/esquema_fact_order.png)
+![Esquema de Ventas (Order)](assets/esquema_fact_order.jpg)
 
 ### 3.2. Fact_Order_Item
 
-![Esquema de Detalle de Venta (Order Item)](assets/esquema_fact_order_item.png)
+![Esquema de Detalle de Venta (Order Item)](assets/esquema_fact_order_item.jpg)
 
 ### 3.3. Fact_Shipment
 
-![Esquema de Envíos (Shipment)](assets/esquema_fact_shipment.png)
+![Esquema de Envíos (Shipment)](assets/esquema_fact_shipment.jpg)
 
 ### 3.4. Fact_Nps_Response
 
-![Esquema de Encuestas (NPS)](assets/esquema_fact_nps_response.png)
+![Esquema de Encuestas (NPS)](assets/esquema_fact_nps_response.jpg)
 
 ### 3.5. Fact_Web_Session
 
-![Esquema de Actividad Web (Web Session)](assets/esquema_fact_web_session.png)
+![Esquema de Actividad Web (Web Session)](assets/esquema_fact_web_session.jpg)
 
 
 ### 3.6. Fact_Payment
 
-![Esquema de Pagos (Payment)](assets/esquema_fact_payment.png)
+![Esquema de Pagos (Payment)](assets/esquema_fact_payment.jpg)
 
 
 ## 📊 Dashboard en Power BI
 
 **[Acceso al Dashboard](https://app.powerbi.com/groups/b750b959-b95e-476b-9a28-42cc455b124d/reports/50382176-c6dc-411c-a5b6-d86b6c34b489/1340d953aaf8568da55a?experience=power-bi)**
 
-`![Captura del Dashboard](assets/dashboard.png)`
+`![Captura del Dashboard](assets/dashboard.jpg)`
 
 ## ⚙️ Instrucciones de Ejecución
 Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
