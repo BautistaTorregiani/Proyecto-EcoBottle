@@ -8,7 +8,7 @@ def transform_fact_order(raw_data, transformed_dims):
     dim_channel = transformed_dims['dim_channel']
     dim_customer = transformed_dims['dim_customer']
     dim_store = transformed_dims['dim_store']
-    dim_location = transformed_dims['dim_location']
+    dim_location = transformed_dims['dim_location'] 
 
     sales_order['order_date_dt'] = pd.to_datetime(sales_order['order_date']).dt.date
     
@@ -28,17 +28,33 @@ def transform_fact_order(raw_data, transformed_dims):
     df = df.merge(dim_channel[['channel_sk', 'channel_id']], on='channel_id', how='left')
     df = df.merge(dim_customer[['customer_sk', 'customer_id']], on='customer_id', how='left')
     df = df.merge(dim_store[['store_sk', 'store_id']], on='store_id', how='left')
+    
+    
+    
+    # (Shipping)
     df = df.merge(dim_location[['location_sk', 'address_id']],
-                  left_on='shipping_address_id',
-                  right_on='address_id',
+                  left_on='shipping_address_id',  # Clave del hecho
+                  right_on='address_id',          # Clave de la dimensión (BK)
+                  how='left')
+    df.rename(columns={'location_sk': 'shipping_location_sk'}, inplace=True)
+      
+    # (Billing)
+    df = df.merge(dim_location[['location_sk', 'address_id']],
+                  left_on='billing_address_id',   #
+                  right_on='address_id',          
                   how='left')
     
+ 
+    df.rename(columns={'location_sk': 'billing_location_sk'}, inplace=True)
+
+    
     cols = [
-        "date_id",       
+        "date_id",      
         "channel_sk",
         "store_sk",
         "customer_sk",
-        "location_sk",
+        "billing_location_sk",   # La nueva SK de facturación
+        "shipping_location_sk",  # La nueva SK de envío
         "status",
         "subtotal",
         "tax_amount",
@@ -48,9 +64,12 @@ def transform_fact_order(raw_data, transformed_dims):
     
     fact_order = df[cols].copy()
     
-    # Asegura que las claves foráneas sean enteros
-    for col in ['date_id', 'channel_sk', 'store_sk', 'customer_sk', 'location_sk']:
-        fact_order[col] = fact_order[col].astype('Int64')
+    sk_cols_to_convert = ['date_id', 'channel_sk', 'store_sk', 'customer_sk', 
+                          'billing_location_sk', 'shipping_location_sk']
+                          
+    for col in sk_cols_to_convert:
+        if col in fact_order.columns: 
+            fact_order[col] = fact_order[col].astype('Int64')
 
     # Agrega surrogate key incremental 
     fact_order.insert(0, 'order_sk', range(1, len(fact_order) + 1))
