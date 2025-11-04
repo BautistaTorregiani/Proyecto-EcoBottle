@@ -93,7 +93,14 @@ Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
     python main.py
 
 
-    | Campo           | Tipo de dato  | Descripción                            |
+
+## 📘 Diccionario de Datos
+El presente Diccionario de Datos detalla los campos, tipos de datos y descripciones de cada tabla que conforma el modelo estrella del proyecto.
+Su propósito es documentar la estructura del Data Warehouse, facilitando la comprensión de las dimensiones y hechos.
+### Dimensiones (Dims):
+---
+### Dim_Product
+| Campo           | Tipo de dato  | Descripción                            |
 | --------------- | ------------- | -------------------------------------- |
 | `product_sk`    | INT           | Clave sustituta (PK).                  |
 | `product_id`    | INT           | Identificador original del producto.   |
@@ -101,4 +108,154 @@ Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
 | `sku`           | VARCHAR(40)   | Código único de producto (Unique).     |
 | `category_name` | VARCHAR(80)   | Categoría del producto.                |
 | `list_price`    | DECIMAL(12,2) | Precio de lista.                       |
-| `status`        | CHAR(255)     | Estado del producto (activo/inactivo). |
+| `status`        | CHAR(1)     | Estado del producto (activo/inactivo). |
+***
+### Dim_Channel
+| Campo          | Tipo de dato | Descripción                              |
+| -------------- | ------------ | ---------------------------------------- |
+| `channel_sk`   | INT          | Clave sustituta (PK).                    |
+| `channel_id`   | INT          | Identificador original del canal.        |
+| `channel_name` | VARCHAR(20)  | Nombre del canal (Online, Tienda, etc.). |
+| `channel_code` | VARCHAR(50)  | Código único del canal (Unique).         |
+***
+### Dim_Customer
+| Campo         | Tipo de dato | Descripción                                |
+| ------------- | ------------ | ------------------------------------------ |
+| `customer_sk` | INT          | Clave sustituta (PK).                      |
+| `customer_id` | INT          | Identificador original del cliente.        |
+| `email`       | VARCHAR(120) | Correo electrónico del cliente.            |
+| `first_name`  | VARCHAR(80)  | Nombre del cliente.                        |
+| `last_name`   | VARCHAR(80)  | Apellido del cliente.                      |
+| `status`      | CHAR(1)      | Estado del cliente (A=Activo, I=Inactivo). |
+| `phone`       | VARCHAR(255) | Teléfono (opcional).                       |
+| `created_at`  | TIMESTAMP    | Fecha de creación del registro.            |
+
+***
+### Dim_Date
+| Campo              | Tipo de dato | Descripción                  |
+| ------------------ | ------------ | ---------------------------- |
+| `date_id`          | INT          | Clave sustituta (PK).        |
+| `date`             | DATE         | Fecha completa (YYYY-MM-DD). |
+| `year`             | SMALLINT     | Año.                         |
+| `month`            | SMALLINT     | Mes numérico.                |
+| `month_name`       | VARCHAR(20)  | Nombre del mes.              |
+| `day`              | SMALLINT     | Día del mes.                 |
+| `quarter`          | SMALLINT     | Trimestre.                   |
+| `day_of_week_name` | VARCHAR(20)  | Día de la semana.            |
+
+***
+
+### Dim_Location
+| Campo           | Tipo de dato | Descripción                          |
+| --------------- | ------------ | ------------------------------------ |
+| `location_sk`   | INT          | Clave sustituta (PK).                |
+| `address_id`    | INT          | Identificador de dirección original. |
+| `line1`         | VARCHAR(120) | Dirección principal.                 |
+| `line2`         | VARCHAR(120) | Dirección secundaria (opcional).     |
+| `city`          | VARCHAR(255) | Ciudad.                              |
+| `postal_code`   | VARCHAR(20)  | Código postal.                       |
+| `province_name` | VARCHAR(50)  | Provincia o estado.                  |
+| `province_code` | VARCHAR(10)  | Código de provincia.                 |
+| `country_code`  | CHAR(2)    | Código de país.                      |
+***
+### Dim_Store
+| Campo           | Tipo de dato | Descripción                          |
+| --------------- | ------------ | ------------------------------------ |
+| `store_sk`      | INT          | Clave sustituta (PK).                |
+| `store_id`      | INT          | Identificador original de la tienda. |
+| `store_name`    | VARCHAR(80)  | Nombre de la tienda.                 |
+| `line1`         | VARCHAR(120) | Dirección principal.                 |
+| `line2`         | VARCHAR(120) | Dirección secundaria.                |
+| `city`          | VARCHAR(80)  | Ciudad.                              |
+| `postal_code`   | VARCHAR(20)  | Código postal.                       |
+| `province_name` | VARCHAR(50)  | Provincia.                           |
+| `province_code` | VARCHAR(10)  | Código de provincia.                 |
+| `country_code`  | CHAR(2)      | Código de país.                      |
+| `created_at`    | TIMESTAMP    | Fecha de creación del registro.      |
+---
+---
+### Hechos (Facts):
+---
+### Fact_Order
+| Campo                  | Tipo de dato | Descripción                                     |
+| ---------------------- | ------------ | ----------------------------------------------- |
+| `order_sk`             | INT          | Clave sustituta (PK).                           |
+| `date_id`              | INT          | FK → `Dim_Date(date_id)`. Fecha del pedido.     |
+| `channel_sk`           | INT          | FK → `Dim_Channel(channel_sk)`.                 |
+| `store_sk`             | INT          | FK → `Dim_Store(store_sk)`.                     |
+| `customer_sk`          | INT          | FK → `Dim_Customer(customer_sk)`.               |
+| `billing_location_sk`  | INT          | FK → `Dim_Location(location_sk)`                |
+| `shipping_location_sk` | INT          | FK → `Dim_Location(location_sk)`                |
+| `status`               | VARCHAR(20)  | Estado del pedido.                              |
+| `subtotal`             | DECIMAL(12,2) | Subtotal de la venta.                          |
+| `tax_amount`           | DECIMAL(12,2) | Monto de impuestos.                            |
+| `shipping_fee`         | DECIMAL(12,2) | Costo de envío.                                |
+| `total_amount`         | DECIMAL(12,2) | Total del pedido.                              |
+---
+### Fact_Order_Item
+| Campo             | Tipo de dato | Descripción                                        |
+| ----------------- | ------------ | -------------------------------------------------- |
+| `order_item_sk`   | INT          | Clave sustituta (PK).                              |
+| `date_id`         | INT          | FK → `Dim_Date(date_id)`.                          |
+| `channel_sk`      | INT          | FK → `Dim_Channel(channel_sk)`.                    |
+| `store_sk`        | INT          | FK → `Dim_Store(store_sk)`.                        |
+| `customer_sk`     | INT          | FK → `Dim_Customer(customer_sk)`.                  |
+| `location_sk`     | INT          | FK → `Dim_Location(location_sk)`.                  |
+| `product_sk`      | INT          | FK → `Dim_Product(product_sk)`.                    |
+| `quantity`        | INT          | Cantidad vendida.                                  |
+| `unit_price`      | DECIMAL(12,2) | Precio unitario.                                   |
+| `discount_amount` | DECIMAL(12,2) | Descuento aplicado.                                |
+| `line_total`      | DECIMAL(12,2) | Total de la línea (cantidad × precio – descuento). |
+---
+### Fact_Payment
+| Campo             | Tipo de dato | Descripción                                    |
+| ----------------- | ------------ | ---------------------------------------------- |
+| `payment_sk`      | INT          | Clave sustituta (PK).                          |
+| `paid_at_date_id` | INT          | FK → `Dim_Date(date_id)`.                      |
+| `paid_at_time`    | TIME         | Hora del pago.                                 |
+| `customer_sk`     | INT          | FK → `Dim_Customer(customer_sk)`.              |
+| `channel_sk`      | INT          | FK → `Dim_Channel(channel_sk)`.                |
+| `store_sk`        | INT          | FK → `Dim_Store(store_sk)`.                    |
+| `location_sk`     | INT          | FK → `Dim_Location(location_sk)`.              |
+| `status`          | VARCHAR(20)  | Estado del pago.                               |
+| `method`          | VARCHAR(255) | Método de pago (tarjeta, transferencia, etc.). |
+| `transaction_ref` | VARCHAR(255) | Código o referencia de transacción.            |
+| `amount`          | DECIMAL(12,2) | Monto abonado.                                 |
+---
+### Fact_Shipment
+| Campo               | Tipo de dato | Descripción                                  |
+| ------------------- | ------------ | -------------------------------------------- |
+| `shipment_sk`       | INT          | Clave sustituta (PK).                        |
+| `shipped_date_id`   | INT          | FK → `Dim_Date(date_id)` (fecha de envío).   |
+| `shipped_at_time`   | TIME         | Hora de envío.                               |
+| `delivered_date_id` | INT          | FK → `Dim_Date(date_id)` (fecha de entrega). |
+| `delivered_at_time` | TIME         | Hora de entrega.                             |
+| `customer_sk`       | INT          | FK → `Dim_Customer(customer_sk)`.            |
+| `channel_sk`        | INT          | FK → `Dim_Channel(channel_sk)`.              |
+| `store_sk`          | INT          | FK → `Dim_Store(store_sk)`.                  |
+| `location_sk`       | INT          | FK → `Dim_Location(location_sk)`.            |
+| `carrier`           | VARCHAR(40)  | Empresa de transporte.                       |
+| `tracking_number`   | VARCHAR(60)  | Número de seguimiento del envío.             |
+---
+### Fact_Nps_Response
+| Campo                  | Tipo de dato | Descripción                                 |
+| ---------------------- | ------------ | ------------------------------------------- |
+| `nps_response_sk`      | INT          | Clave sustituta (PK).                       |
+| `responded_at_date_id` | INT          | FK → `Dim_Date(date_id)` (fecha respuesta). |
+| `responded_at_time`    | TIME         | Hora de respuesta.                          |
+| `customer_sk`          | INT          | FK → `Dim_Customer(customer_sk)`.           |
+| `channel_sk`           | INT          | FK → `Dim_Channel(channel_sk)`.             |
+| `score`                | SMALLINT     | Puntaje NPS (0 a 10).                       |
+| `comment`              | TEXT         | Comentario del cliente (opcional).          |
+---
+### Fact_Web_Session
+| Campo             | Tipo de dato | Descripción                                      |
+| ----------------- | ------------ | ------------------------------------------------ |
+| `session_sk`      | INT          | Clave sustituta (PK).                            |
+| `started_date_id` | INT          | FK → `Dim_Date(date_id)` (inicio).               |
+| `started_at_time` | TIME         | Hora de inicio.                                  |
+| `ended_date_id`   | INT          | FK → `Dim_Date(date_id)` (fin).                  |
+| `ended_at_time`   | TIME         | Hora de finalización.                            |
+| `customer_sk`     | INT          | FK → `Dim_Customer(customer_sk)`.                |
+| `source`          | VARCHAR(50)  | Fuente de tráfico (Google, Direct, Email, etc.). |
+| `device`          | VARCHAR(30)  | Dispositivo utilizado (mobile, desktop, tablet). |
