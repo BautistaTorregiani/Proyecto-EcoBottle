@@ -47,7 +47,7 @@ El modelo de datos se descompone 6 esquemas estrella, uno por cada proceso de ne
 
 **[Acceso al Dashboard](https://app.powerbi.com/groups/b750b959-b95e-476b-9a28-42cc455b124d/reports/50382176-c6dc-411c-a5b6-d86b6c34b489/1340d953aaf8568da55a?experience=power-bi)**
 
-`![Captura del Dashboard](assets/dashboard.jpg)`
+`![Captura del Dashboard](assets/dashboard.png)
 
 ## ⚙️ Instrucciones de Ejecución
 Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
