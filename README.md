@@ -173,7 +173,6 @@ Su propósito es documentar la estructura del Data Warehouse, facilitando la com
 | `country_code`  | CHAR(2)      | Código de país.                      |
 | `created_at`    | TIMESTAMP    | Fecha de creación del registro.      |
 ---
----
 ### Hechos (Facts):
 ---
 ### Fact_Order
