@@ -11,6 +11,11 @@ La metodología implementada es el **modelado dimensional (esquema estrella) de 
 ## 2 Flujo de Datos (ETL)
 1.  **Extracción (Extract):** Lee los archivos `.csv` desde el directorio `raw/`.
 
+2.  **Transformación (Transform):** Esta es la fase central donde se aplica el modelado de datos.
+    * **Limpieza:** Se limpian y estandarizan los datos (ej. fechas, valores numéricos).
+    * **Generación de Dimensiones:** Se crean las tablas de dimensión (ej. `dim_product`, `dim_customer`) y se les asigna una **Clave Surrogada (SK)** única.
+    * **Generación de Hechos:** Se construyen las tablas de hechos (ej. `fact_order`). En este paso, se reemplazan las claves de negocio originales (ej. `product_id`) por sus respectivas Claves Surrogadas (SK), creando el modelo estrella final.
+
 3.  **Carga (Load):** Guarda los DataFrames transformados como nuevos archivos `.csv` en el directorio `dw/`.
 
 
