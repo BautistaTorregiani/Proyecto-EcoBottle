@@ -91,3 +91,14 @@ Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
 
     ```bash
     python main.py
+
+
+    | Campo           | Tipo de dato  | Descripción                            |
+| --------------- | ------------- | -------------------------------------- |
+| `product_sk`    | INT           | Clave sustituta (PK).                  |
+| `product_id`    | INT           | Identificador original del producto.   |
+| `product_name`  | VARCHAR(120)  | Nombre del producto.                   |
+| `sku`           | VARCHAR(40)   | Código único de producto (Unique).     |
+| `category_name` | VARCHAR(80)   | Categoría del producto.                |
+| `list_price`    | DECIMAL(12,2) | Precio de lista.                       |
+| `status`        | CHAR(255)     | Estado del producto (activo/inactivo). |
