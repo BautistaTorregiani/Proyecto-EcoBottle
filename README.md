@@ -45,9 +45,12 @@ El modelo de datos se descompone 6 esquemas estrella, uno por cada proceso de ne
 
 ## 📊 Dashboard en Power BI
 
+El dashboard interactivo con todos los KPIs del proyecto se puede consultar en el siguiente enlace:
+
 **[Acceso al Dashboard](https://app.powerbi.com/groups/b750b959-b95e-476b-9a28-42cc455b124d/reports/50382176-c6dc-411c-a5b6-d86b6c34b489/1340d953aaf8568da55a?experience=power-bi)**
 
-`![Captura del Dashboard](assets/dashboard.png)
+
+![Captura del Dashboard](assets/dashboard.png)
 
 ## ⚙️ Instrucciones de Ejecución
 Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
@@ -57,3 +60,29 @@ Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
     git clone [https://github.com/BautistaTorregiani/mkt_tp_final.git](https://github.com/BautistaTorregiani/mkt_tp_final.git)
     cd mkt_tp_final
     ```
+
+2.  **Crear y activar el entorno virtual**:
+    ```bash
+    # En Windows
+    python -m venv venv
+    .\venv\Scripts\activate
+    
+    # En macOS/Linux
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+
+    3.  **Instalar dependencias:**
+    El archivo `requirements.txt` contiene todas las librerías de Python necesarias.
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+    4. Ejecución del Proceso ETL
+
+    El script `main.py` actúa como orquestador central y maneja todo el proceso ETL. Este script se encarga de ejecutar las transformaciones en el orden correct para asegurar la integridad.
+
+    Para ejecutar el pipeline completo, se debe ejecutar:
+
+    ```bash
+    python main.py
