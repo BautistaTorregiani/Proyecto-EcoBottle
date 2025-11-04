@@ -1,9 +1,11 @@
 # Introducción al Marketing Online y los Negocios Digitales - TP Final
-
 ##  EcoBottle - Desnormalización y Creación de Dashboard
 
-## 1. Introducción y Objetivos
+**Alumno:** Torregiani, Bautista  
 
+**Fecha de Entrega:** 17/11/2025
+## 1. Introducción y Objetivos
+---
 El objetivo principal de este proyecto es **diseñar e implementar un mini-ecosistema de datos comercial  y construir un dashboard** que sirva como reporte para un área comercial.
 
 La metodología implementada es el **modelado dimensional (esquema estrella) de Kimball**, asegurando que el modelo de datos esté optimizado para consultas analíticas y reportes.
@@ -57,7 +59,7 @@ El dashboard interactivo con todos los KPIs del proyecto se puede consultar en e
 
 ![Captura del Dashboard](assets/dashboard.png)
 
-## ⚙️ Instrucciones de Ejecución
+## 4. ⚙️ Instrucciones de Ejecución
 Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
 
 1.  **Clonar el repositorio:**
@@ -94,7 +96,7 @@ Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
 
 
 
-## 📘 Diccionario de Datos
+## 5. 📘 Diccionario de Datos
 El presente Diccionario de Datos detalla los campos, tipos de datos y descripciones de cada tabla que conforma el modelo estrella del proyecto.
 Su propósito es documentar la estructura del Data Warehouse, facilitando la comprensión de las dimensiones y hechos.
 ### Dimensiones (Dims):
@@ -258,3 +260,72 @@ Su propósito es documentar la estructura del Data Warehouse, facilitando la com
 | `customer_sk`     | INT          | FK → `Dim_Customer(customer_sk)`.                |
 | `source`          | VARCHAR(50)  | Fuente de tráfico (Google, Direct, Email, etc.). |
 | `device`          | VARCHAR(30)  | Dispositivo utilizado (mobile, desktop, tablet). |
+
+
+---
+## 6. Supuestos y Decisiones de Modelado
+
+Durante el desarrollo del proyecto, se tomaron las siguientes decisiones clave:
+
+1.  **Claves Surrogadas (SK) vs. Claves de Negocio (BK):**
+    * Todas las dimensiones utilizan una **SK** (ej: `product_sk`) autoincremental como Clave Primaria (PK). Esto asegura la integridad referencial y desacopla el DW de los sistemas de producción, esto significa que las conexiones entre tus tablas (como 'Ventas' y 'Productos') nunca se rompen y que el dashboard no se daña si los IDs del sistema original cambian.
+    * Las **BK** (ej: `product_id`) se conservan en la dimensión para permitir el *lookup* (búsqueda) durante el proceso ETL.
+
+
+## 7. Consultas Clave
+
+Las siguientes medidas DAX fueron creadas en Power BI para implementar la lógica de negocio y calcular los KPIs principales solicitados.
+
+### Total Ventas ($M)
+Esta medida calcula la suma de `total_amount` únicamente para las órdenes consideradas "válidas" (pagadas o completadas).
+
+```dax
+Total Ventas = 
+CALCULATE(
+    SUM(Fact_Order[total_amount]),
+    Fact_Order[status] IN {"PAID", "FULFILLED"}
+)
+```
+---
+### Ticket Promedio ($K)
+Esta medida calcula el promedio de total_amount utilizando el mismo filtro de "ventas válidas" que el KPI anterior
+
+```dax
+Ticket Promedio = 
+CALCULATE(
+    AVERAGE(Fact_Order[total_amount]),
+    Fact_Order[status] IN {"PAID", "FULFILLED"}
+)
+```
+---
+### Usuarios Activos
+Calcula el conteo único de clientes que tuvieron al menos una sesión web.
+
+```dax
+Usuarios Activos = 
+DISTINCTCOUNT('fact_web_session'[customer_sk])
+```
+---
+### NPS
+El NPS (Net Promoter Score) se calcula midiendo la proporción de clientes promotores y detractores.
+Primero, se obtiene el porcentaje de promotores, es decir, los clientes que calificaron con 9 o 10 puntos, y el porcentaje de detractores, que son los que calificaron entre 0 y 6 puntos.
+Luego, la fórmula final es:
+
+(Porcentaje de Promotores − Porcentaje de Detractores) × 100
+```dax
+NPS = 
+VAR TotalRespuestas =
+    COUNT ( 'fact_nps_response'[score] )
+VAR Promotores =
+    CALCULATE (
+        COUNT ( 'fact_nps_response'[score] ),
+        'fact_nps_response'[score] >= 9
+    )
+VAR Detractores =
+    CALCULATE (
+        COUNT ( 'fact_nps_response'[score] ),
+        'fact_nps_response'[score] <= 6
+    )
+RETURN
+    DIVIDE ( ( Promotores - Detractores ), TotalRespuestas ) * 100
+```
