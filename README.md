@@ -1,9 +1,7 @@
-# Introducción al Marketing Online y los Negocios Digitales - TP Final
-##  EcoBottle - Desnormalización y Creación de Dashboard
+#  Proyecto EcoBottle - Desnormalización y Creación de Dashboard
 
-**Alumno:** Torregiani, Bautista  
+**Autor:** Torregiani, Bautista  
 
-**Fecha de Entrega:** 17/11/2025
 ## 1. Introducción y Objetivos
 ---
 El objetivo principal de este proyecto es **diseñar e implementar un mini-ecosistema de datos comercial  y construir un dashboard** que sirva como reporte para un área comercial.
