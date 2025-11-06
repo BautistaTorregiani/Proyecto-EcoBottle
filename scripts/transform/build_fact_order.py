@@ -49,12 +49,13 @@ def transform_fact_order(raw_data, transformed_dims):
 
     
     cols = [
+        "order_id",
         "date_id",      
         "channel_sk",
         "store_sk",
         "customer_sk",
-        "billing_location_sk",   # La nueva SK de facturación
-        "shipping_location_sk",  # La nueva SK de envío
+        "billing_location_sk",   
+        "shipping_location_sk",  
         "status",
         "subtotal",
         "tax_amount",

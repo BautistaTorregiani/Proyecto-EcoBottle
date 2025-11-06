@@ -56,7 +56,7 @@ def run_etl_pipeline():
     fact_order = transform_fact_order(raw_data, transformed_dims)
     fact_order_item = transform_fact_order_item(raw_data, transformed_dims)
     fact_payment = transform_fact_payment(raw_data, transformed_dims)
-    fact_shipment = transform_fact_shipment(raw_data, transformed_dims)
+    fact_shipment = transform_fact_shipment(raw_data, transformed_dims,fact_order)
     fact_nps_response = transform_fact_nps_response(raw_data, transformed_dims)
     fact_web_session = transform_fact_web_session(raw_data, transformed_dims)
 
