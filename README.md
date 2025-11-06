@@ -48,16 +48,14 @@ El modelo de datos se descompone 6 esquemas estrella, uno por cada proceso de ne
 ![Esquema de Pagos (Payment)](assets/esquema_fact_payment.jpg)
 
 
-## 📊 Dashboard en Power BI
+## 4. 📊 Dashboard en Power BI
 
 El dashboard interactivo con todos los KPIs del proyecto se puede consultar en el siguiente enlace:
 
-**[Acceso al Dashboard](https://app.powerbi.com/groups/b750b959-b95e-476b-9a28-42cc455b124d/reports/50382176-c6dc-411c-a5b6-d86b6c34b489/1340d953aaf8568da55a?experience=power-bi)**
+**[Acceso al Dashboard](https://app.powerbi.com/view?r=eyJrIjoiNzcwMjQ5ZTMtMGU0Yi00MzY5LWFkMmYtODQxYjI0ZjEyM2ZlIiwidCI6IjNlMDUxM2Q2LTY4ZmEtNDE2ZS04ZGUxLTZjNWNkYzMxOWZmYSIsImMiOjR9&pageName=2f766cc95f6760803929)**
 
 
-![Captura del Dashboard](assets/dashboard.png)
-
-## 4. ⚙️ Instrucciones de Ejecución
+## 5. ⚙️ Instrucciones de Ejecución
 Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
 
 1.  **Clonar el repositorio:**
@@ -94,7 +92,7 @@ Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
 
 
 
-## 5. 📘 Diccionario de Datos
+## 6. 📘 Diccionario de Datos
 El presente Diccionario de Datos detalla los campos, tipos de datos y descripciones de cada tabla que conforma el modelo estrella del proyecto.
 Su propósito es documentar la estructura del Data Warehouse, facilitando la comprensión de las dimensiones y hechos.
 ### Dimensiones (Dims):
@@ -261,7 +259,7 @@ Su propósito es documentar la estructura del Data Warehouse, facilitando la com
 
 
 ---
-## 6. Supuestos y Decisiones de Modelado
+## 7. Supuestos y Decisiones de Modelado
 
 Durante el desarrollo del proyecto, se tomaron las siguientes decisiones clave:
 
