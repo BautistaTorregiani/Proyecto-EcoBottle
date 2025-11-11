@@ -8,54 +8,14 @@ El objetivo principal de este proyecto es **diseñar e implementar un mini-ecosi
 
 La metodología implementada es el **modelado dimensional (esquema estrella) de Kimball**, asegurando que el modelo de datos esté optimizado para consultas analíticas y reportes.
 
-## 2 Flujo de Datos (ETL)
-1.  **Extracción (Extract):** Lee los archivos `.csv` desde el directorio `raw/`.
 
-2.  **Transformación (Transform):** Esta es la fase central donde se aplica el modelado de datos.
-    * **Limpieza:** Se limpian y estandarizan los datos (ej. fechas, valores numéricos).
-    * **Generación de Dimensiones:** Se crean las tablas de dimensión (ej. `dim_product`, `dim_customer`) y se les asigna una **Clave Surrogada (SK)** única.
-    * **Generación de Hechos:** Se construyen las tablas de hechos (ej. `fact_order`). En este paso, se reemplazan las claves de negocio originales (ej. `product_id`) por sus respectivas Claves Surrogadas (SK), creando el modelo estrella final.
-
-3.  **Carga (Load):** Guarda los DataFrames transformados como nuevos archivos `.csv` en el directorio `dw/`.
-
-
-## 3. Modelo de Datos (Esquema Estrella)
-El modelo de datos se descompone 6 esquemas estrella, uno por cada proceso de negocio.
-
-### 3.1. Fact_Order
-
-![Esquema de Ventas (Order)](assets/esquema_fact_order.jpg)
-
-### 3.2. Fact_Order_Item
-
-![Esquema de Detalle de Venta (Order Item)](assets/esquema_fact_order_item.jpg)
-
-### 3.3. Fact_Shipment
-
-![Esquema de Envíos (Shipment)](assets/esquema_fact_shipment.jpg)
-
-### 3.4. Fact_Nps_Response
-
-![Esquema de Encuestas (NPS)](assets/esquema_fact_nps_response.jpg)
-
-### 3.5. Fact_Web_Session
-
-![Esquema de Actividad Web (Web Session)](assets/esquema_fact_web_session.jpg)
-
-
-### 3.6. Fact_Payment
-
-![Esquema de Pagos (Payment)](assets/esquema_fact_payment.jpg)
-
-
-## 4. 📊 Dashboard en Power BI
+## 2. 📊 Dashboard en Power BI
 
 El dashboard interactivo con todos los KPIs del proyecto se puede consultar en el siguiente enlace:
 
 **[Acceso al Dashboard](https://app.powerbi.com/view?r=eyJrIjoiNzcwMjQ5ZTMtMGU0Yi00MzY5LWFkMmYtODQxYjI0ZjEyM2ZlIiwidCI6IjNlMDUxM2Q2LTY4ZmEtNDE2ZS04ZGUxLTZjNWNkYzMxOWZmYSIsImMiOjR9&pageName=2f766cc95f6760803929)**
 
-
-## 5. ⚙️ Instrucciones de Ejecución
+## 3. ⚙️ Instrucciones de Ejecución
 Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
 
 1.  **Clonar el repositorio:**
@@ -89,6 +49,46 @@ Se deben de seguir estos pasos para replicar el entorno y procesar los datos.
 
     ```bash
     python main.py
+
+
+## 4 Flujo de Datos (ETL)
+1.  **Extracción (Extract):** Lee los archivos `.csv` desde el directorio `raw/`.
+
+2.  **Transformación (Transform):** Esta es la fase central donde se aplica el modelado de datos.
+    * **Limpieza:** Se limpian y estandarizan los datos (ej. fechas, valores numéricos).
+    * **Generación de Dimensiones:** Se crean las tablas de dimensión (ej. `dim_product`, `dim_customer`) y se les asigna una **Clave Surrogada (SK)** única.
+    * **Generación de Hechos:** Se construyen las tablas de hechos (ej. `fact_order`). En este paso, se reemplazan las claves de negocio originales (ej. `product_id`) por sus respectivas Claves Surrogadas (SK), creando el modelo estrella final.
+
+3.  **Carga (Load):** Guarda los DataFrames transformados como nuevos archivos `.csv` en el directorio `dw/`.
+
+
+## 5. Modelo de Datos (Esquema Estrella)
+El modelo de datos se descompone 6 esquemas estrella, uno por cada proceso de negocio.
+
+### 5.1. Fact_Order
+
+![Esquema de Ventas (Order)](assets/esquema_fact_order.jpg)
+
+### 5.2 Fact_Order_Item
+
+![Esquema de Detalle de Venta (Order Item)](assets/esquema_fact_order_item.jpg)
+
+### 5.3 Fact_Shipment
+
+![Esquema de Envíos (Shipment)](assets/esquema_fact_shipment.png)
+
+### 5.4 Fact_Nps_Response
+
+![Esquema de Encuestas (NPS)](assets/esquema_fact_nps_response.jpg)
+
+### 5.5 Fact_Web_Session
+
+![Esquema de Actividad Web (Web Session)](assets/esquema_fact_web_session.jpg)
+
+
+### 5.6 Fact_Payment
+
+![Esquema de Pagos (Payment)](assets/esquema_fact_payment.jpg)
 
 
 
@@ -220,19 +220,20 @@ Su propósito es documentar la estructura del Data Warehouse, facilitando la com
 | `amount`          | DECIMAL(12,2) | Monto abonado.                                 |
 ---
 ### Fact_Shipment
-| Campo               | Tipo de dato | Descripción                                  |
-| ------------------- | ------------ | -------------------------------------------- |
-| `shipment_sk`       | INT          | Clave sustituta (PK).                        |
-| `shipped_date_id`   | INT          | FK → `Dim_Date(date_id)` (fecha de envío).   |
-| `shipped_at_time`   | TIME         | Hora de envío.                               |
-| `delivered_date_id` | INT          | FK → `Dim_Date(date_id)` (fecha de entrega). |
-| `delivered_at_time` | TIME         | Hora de entrega.                             |
-| `customer_sk`       | INT          | FK → `Dim_Customer(customer_sk)`.            |
-| `channel_sk`        | INT          | FK → `Dim_Channel(channel_sk)`.              |
-| `store_sk`          | INT          | FK → `Dim_Store(store_sk)`.                  |
-| `location_sk`       | INT          | FK → `Dim_Location(location_sk)`.            |
-| `carrier`           | VARCHAR(40)  | Empresa de transporte.                       |
-| `tracking_number`   | VARCHAR(60)  | Número de seguimiento del envío.             |
+| Campo | Tipo de dato | Descripción |
+| :--- | :--- | :--- |
+| `shipment_sk` | INT | Clave sustituta (PK). |
+| `order_sk` | INT | FK → `Fact_Order(order_sk)` (Pedido asociado). |
+| `shipped_date_id` | INT | FK → `Dim_Date(date_id)` (fecha de envío). |
+| `shipped_at_time` | TIME | Hora de envío. |
+| `delivered_date_id`| INT | FK → `Dim_Date(date_id)` (fecha de entrega). |
+| `delivered_at_time`| TIME | Hora de entrega. |
+| `customer_sk` | INT | FK → `Dim_Customer(customer_sk)`. |
+| `channel_sk` | INT | FK → `Dim_Channel(channel_sk)`. |
+| `store_sk` | INT | FK → `Dim_Store(store_sk)`. |
+| `location_sk` | INT | FK → `Dim_Location(location_sk)`. |
+| `carrier` | VARCHAR(40) |  Empresa de transporte.|
+| `tracking_number` | VARCHAR(60) | Número de seguimiento del envío. [cite: 142] 
 ---
 ### Fact_Nps_Response
 | Campo                  | Tipo de dato | Descripción                                 |
@@ -265,8 +266,20 @@ Durante el desarrollo del proyecto, se tomaron las siguientes decisiones clave:
 
 1.  **Claves Surrogadas (SK) vs. Claves de Negocio (BK):**
     * Todas las dimensiones utilizan una **SK** (ej: `product_sk`) autoincremental como Clave Primaria (PK). Esto asegura la integridad referencial y desacopla el DW de los sistemas de producción, esto significa que las conexiones entre tus tablas (como 'Ventas' y 'Productos') nunca se rompen y que el dashboard no se daña si los IDs del sistema original cambian.
-    * Las **BK** (ej: `product_id`) se conservan en la dimensión para permitir el *lookup* (búsqueda) durante el proceso ETL.
 
+2. **Dimensión Degenerada para Análisis Enriquecido:** Para enriquecer el análisis y vincular directamente el proceso de envío con el de venta, se incluyó la clave `order_sk` (la PK de `Fact_Order`) como Clave Foránea (FK) en la tabla `Fact_Shipment`. Este uso de la clave de un hecho como un atributo en otro hecho actúa como una dimensión degenerada, permitiendo cruzar la información de envíos con la del pedido de forma directa.
+
+3. **Métrica Adicional: Tasa de Entregas a Tiempo:**
+
+   * Con el objetivo de **reducir los tiempos de entrega en Mendoza** y monitorear la **performance logística**, se incorporó al dashboard la métrica **`Tasa de Entregas a Tiempo`**.  
+
+   * **Definición:**  
+     Se considera una entrega *“a tiempo”* cuando el pedido fue entregado en un **plazo igual o menor a 3 días hábiles**, calculado como la diferencia entre las columnas `delivered_at` y `shipped_at` de la tabla `shipment`.  
+
+   * **Supuesto del Plazo (3 días):**  
+     El umbral de **3 días hábiles** se define como un **supuesto clave** que representa el **tiempo máximo de cumplimiento esperado** según los **Acuerdos de Nivel de Servicio (SLA)** de **Correo Argentino** para sus servicios de paquetería premium (como *“Encomienda Prioritaria”* o *“Paq.ar Expreso”*), los cuales estipulan un plazo de entrega de **1 a 3 días hábiles**.  
+
+ Fuente oficial: [Correo Argentino – Encomienda Prioritaria](https://www.correoargentino.com.ar/servicios/paqueteria/encomienda-correo-prioritaria)
 
 ## 7. Consultas Clave
 
@@ -325,3 +338,4 @@ VAR Detractores =
 RETURN
     DIVIDE ( ( Promotores - Detractores ), TotalRespuestas ) * 100
 ```
+
