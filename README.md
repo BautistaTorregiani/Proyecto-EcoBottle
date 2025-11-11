@@ -27,9 +27,15 @@ Ejecuta las tres etapas del proceso ETL (Extract → Transform → Load) en orde
 
 ---
 
-## 2. 📊 Dashboard en Power BI
+## 2. 📊 Dashboard de Reporte
 
-El dashboard interactivo con todos los KPIs del proyecto se puede consultar en el siguiente enlace:
+### 💵 Reporte de Ventas y Kpis
+![Reporte de ventas](assets/dashboard1.png)
+### 🚚 Reporte Tiempos de Envio
+![Tiempos de Envío](assets/dashboard2.png)
+
+### 🔗 Acceso al Dashboard Interactivo
+El dashboard interactivo del proyecto se puede consultar en el siguiente enlace:
 
 **[Acceso al Dashboard](https://app.powerbi.com/view?r=eyJrIjoiNzcwMjQ5ZTMtMGU0Yi00MzY5LWFkMmYtODQxYjI0ZjEyM2ZlIiwidCI6IjNlMDUxM2Q2LTY4ZmEtNDE2ZS04ZGUxLTZjNWNkYzMxOWZmYSIsImMiOjR9&pageName=2f766cc95f6760803929)**
 
