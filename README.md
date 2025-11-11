@@ -8,6 +8,24 @@ El objetivo principal de este proyecto es **diseñar e implementar un mini-ecosi
 
 La metodología implementada es el **modelado dimensional (esquema estrella) de Kimball**, asegurando que el modelo de datos esté optimizado para consultas analíticas y reportes.
 
+## 📂 Estructura Principal del Proyecto
+
+**raw/**: Contiene los archivos .CSV originales que simulan la base de datos OLTP de la empresa.
+Estos datos no se modifican: sirven como fuente de extracción para el pipeline ETL.
+
+**scripts/**:  Aloja toda la lógica del pipeline ETL, separada por etapas para mantener modularidad y trazabilidad:
+* `scripts/extract/` → Lee los CSV desde `raw/` y los carga en DataFrames.
+* `scripts/transform/` → Limpia y construye las tablas de Dimensiones y Hechos.
+* `scripts/load/` → Exporta los resultados transformados hacia el Data Warehouse (`dw/`).
+
+
+**dw/**: Directorio de salida del Data Warehouse (DW).
+Contiene los datos finales listos para ser consumidos por herramientas de Business Intelligence
+
+**main.py**: Script orquestador del proyecto.
+Ejecuta las tres etapas del proceso ETL (Extract → Transform → Load) en orden, coordinando la lectura de `raw/`, las transformaciones en `scripts/` y la carga final en `dw/`.
+
+---
 
 ## 2. 📊 Dashboard en Power BI
 
