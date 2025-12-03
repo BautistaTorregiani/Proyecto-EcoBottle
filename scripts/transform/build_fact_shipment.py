@@ -16,7 +16,7 @@ def transform_fact_shipment(raw_data, transformed_dims, fact_order):
     on="order_id", how="left"
 )
 
-# --- 🔹 Un único merge con fact_order para traer order_sk (y date_id si lo querés)
+
     df = df.merge(
     fact_order[['order_id', 'order_sk', 'date_id']],
     on='order_id',
